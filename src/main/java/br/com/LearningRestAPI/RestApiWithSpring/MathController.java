@@ -22,7 +22,57 @@ public class MathController {
 		Double sum = convertToDouble(numberOne) + convertToDouble(numberTwo);
 		return sum;
 	}
+	
+	@RequestMapping(value = "/decrease/{numberOne}/{numberTwo}" , method = RequestMethod.GET)
+	public Double decrease(@PathVariable("numberOne") String numberOne,
+			@PathVariable("numberTwo") String numberTwo) throws Exception{
+		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new ExceptionCustomizada("Please set a numeric value!");
+		}
+		Double decre = convertToDouble(numberOne) - convertToDouble(numberTwo);
+		return decre;
+	}
 
+	@RequestMapping(value = "/multiplication/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public Double multiply(@PathVariable("numberOne") String numberOne ,
+			@PathVariable("numberTwo") String numberTwo) throws Exception{
+		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new ExceptionCustomizada("Please set a numeric value!");
+		}
+		Double multi = convertToDouble(numberOne) * convertToDouble(numberTwo);
+		return multi;
+	}
+	
+	@RequestMapping(value = "/division/{numberOne}/{numberTwo}" ,method = RequestMethod.GET)
+	public Double divi(@PathVariable("numberOne") String numberOne , 
+			@PathVariable("numberTwo") String numberTwo) throws Exception{
+		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new ExceptionCustomizada("Please set a numeric value!");
+		}
+		Double div = convertToDouble(numberOne) / convertToDouble(numberTwo);
+		return div;
+	}
+	
+	//Média
+	@RequestMapping(value = "/average/{numberOne}/{numberTwo}" , method = RequestMethod.GET)
+	public Double average(@PathVariable("numberOne") String numberOne,
+			@PathVariable("numberTwo") String numberTwo) throws Exception{
+		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new ExceptionCustomizada("Please set a numeric value!");
+		}
+		Double avg = (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
+		return avg;
+	}
+	
+	@RequestMapping(value = "/sqrt/{numberOne}" ,  method = RequestMethod.GET)
+	public Double average(@PathVariable("numberOne") String numberOne) throws Exception{
+		if(!isNumeric(numberOne)) {
+			throw new ExceptionCustomizada("Please set a numeric value!");
+		}
+		Double raiz = Math.sqrt(convertToDouble(numberOne)); 
+		return raiz;
+	}
+	
 	//Metodo de verificação se o número passado e Númerico.
 	private boolean isNumeric(String strNumber) {
 		if(strNumber == null) return false;
