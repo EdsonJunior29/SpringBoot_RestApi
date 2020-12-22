@@ -1,4 +1,4 @@
-package br.com.LearningRestAPI.RestApiWithSpring;
+package br.com.LearningRestAPI.RestApiWithSpring.controller;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -6,9 +6,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.LearningRestAPI.RestApiWithSpring.exception.ExceptionCustomizada;
+import br.com.LearningRestAPI.RestApiWithSpring.math.MathCalc;
+import br.com.LearningRestAPI.RestApiWithSpring.request.converters.NumberConverter;
 
 @RestController
 public class MathController {
+	
+	MathCalc mathCalc = new MathCalc();
 	
 	@RequestMapping(value = "/sum/{numberOne}/{numberTwo}" , method = RequestMethod.GET)
 	public Double sum(@PathVariable("numberOne") String numberOne ,
@@ -16,79 +20,57 @@ public class MathController {
 		
 		//realização de um verificação
 		//Quando o numero1 ou  o numero2 nao for numérico será lancada a excecao;
-		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+		if(!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
 			throw new ExceptionCustomizada("Please set a numeric value!");
 		}
-		Double sum = convertToDouble(numberOne) + convertToDouble(numberTwo);
-		return sum;
+		return mathCalc.sum(NumberConverter.convertToDouble(numberOne),NumberConverter.convertToDouble(numberTwo));
 	}
 	
 	@RequestMapping(value = "/decrease/{numberOne}/{numberTwo}" , method = RequestMethod.GET)
 	public Double decrease(@PathVariable("numberOne") String numberOne,
 			@PathVariable("numberTwo") String numberTwo) throws Exception{
-		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+		if(!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
 			throw new ExceptionCustomizada("Please set a numeric value!");
 		}
-		Double decre = convertToDouble(numberOne) - convertToDouble(numberTwo);
-		return decre;
+		 return mathCalc.subtraction(NumberConverter.convertToDouble(numberOne) , NumberConverter.convertToDouble(numberTwo));
+		
 	}
 
 	@RequestMapping(value = "/multiplication/{numberOne}/{numberTwo}", method = RequestMethod.GET)
 	public Double multiply(@PathVariable("numberOne") String numberOne ,
 			@PathVariable("numberTwo") String numberTwo) throws Exception{
-		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+		if(!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
 			throw new ExceptionCustomizada("Please set a numeric value!");
 		}
-		Double multi = convertToDouble(numberOne) * convertToDouble(numberTwo);
-		return multi;
+		return mathCalc.multiplication(NumberConverter.convertToDouble(numberOne) ,NumberConverter.convertToDouble(numberTwo));
+		
 	}
 	
 	@RequestMapping(value = "/division/{numberOne}/{numberTwo}" ,method = RequestMethod.GET)
 	public Double divi(@PathVariable("numberOne") String numberOne , 
 			@PathVariable("numberTwo") String numberTwo) throws Exception{
-		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+		if(!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
 			throw new ExceptionCustomizada("Please set a numeric value!");
 		}
-		Double div = convertToDouble(numberOne) / convertToDouble(numberTwo);
-		return div;
+		return mathCalc.division(NumberConverter.convertToDouble(numberOne) ,NumberConverter.convertToDouble(numberTwo));
 	}
 	
 	//Média
 	@RequestMapping(value = "/average/{numberOne}/{numberTwo}" , method = RequestMethod.GET)
 	public Double average(@PathVariable("numberOne") String numberOne,
 			@PathVariable("numberTwo") String numberTwo) throws Exception{
-		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+		if(!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
 			throw new ExceptionCustomizada("Please set a numeric value!");
 		}
-		Double avg = (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
-		return avg;
+		return mathCalc.avg(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
 	}
 	
 	@RequestMapping(value = "/sqrt/{numberOne}" ,  method = RequestMethod.GET)
 	public Double average(@PathVariable("numberOne") String numberOne) throws Exception{
-		if(!isNumeric(numberOne)) {
+		if(!NumberConverter.isNumeric(numberOne)) {
 			throw new ExceptionCustomizada("Please set a numeric value!");
 		}
-		Double raiz = Math.sqrt(convertToDouble(numberOne)); 
-		return raiz;
+		return mathCalc.squareRoot(NumberConverter.convertToDouble(numberOne)); 
 	}
-	
-	//Metodo de verificação se o número passado e Númerico.
-	private boolean isNumeric(String strNumber) {
-		if(strNumber == null) return false;
-		//substituição de vírgula por ponto usando replaceAll
-		String number = strNumber.replaceAll(",", "."); 
-		//Regex que verifica se e um número.
-		return number.matches("[-+]?[0-9]*\\.?[0-9]+");
-	}
-	
-	//metodo para converter String em double.
-	private double convertToDouble(String strNumber) {
-		if(strNumber == null) return 0D;
-		String number = strNumber.replaceAll(",", ".");
-		if(isNumeric(number)) return Double.parseDouble(number);
-		return 0D;
-	}
-
 	
 }
