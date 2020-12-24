@@ -2,13 +2,35 @@ package br.com.LearningRestAPI.RestApiWithSpring.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "persons") //nome para a tabela
 public class Person implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@Id //id da tabela
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //AutoIncrement do Id.
 	private Long id;
+	
+	//@column -> nome da coluna no banco de dados  
+	//nullable = false -> não aceita null
+	//length -> significa o tamanho do campo.
+	@Column(name = "first_name" , nullable = false, length = 15) 
 	private String firstName;
+	
+	@Column(name = "last_name" , nullable = false, length = 15)
 	private String lastName;
+	
+	@Column(nullable = false , length = 100)
 	private String address;
+	
+	@Column(nullable = false , length = 6) 
 	private String gender;
 	
 	public Person() {}
