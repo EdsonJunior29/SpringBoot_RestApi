@@ -1,4 +1,4 @@
-package br.com.LearningRestAPI.RestApiWithSpring.model;
+package br.com.LearningRestAPI.RestApiWithSpring.data.model;
 
 import java.io.Serializable;
 
@@ -125,3 +125,4 @@ public class Person implements Serializable{
 	}
 
 }
+
