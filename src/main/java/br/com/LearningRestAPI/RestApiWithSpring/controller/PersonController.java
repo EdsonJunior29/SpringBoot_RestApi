@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.LearningRestAPI.RestApiWithSpring.data.vo.PersonVO;
 import br.com.LearningRestAPI.RestApiWithSpring.services.PersonServices;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value = "Person EndPoint" , description = "Description for person" , tags = {"PersonEndpoint"})
 @RestController
 @RequestMapping("/person")
 public class PersonController {
@@ -26,6 +29,7 @@ public class PersonController {
 	@Autowired
 	private PersonServices service;
 	
+	@ApiOperation(value = "Find all people")
 	@GetMapping(produces = {"application/json" , "application/xml" , "application/x-yaml"})
 	public List<PersonVO> findAll(){
 		List<PersonVO> persons = service.findAll();
@@ -34,6 +38,7 @@ public class PersonController {
 		return persons;
 	}
 	
+	@ApiOperation(value = "Find by Id")
 	@GetMapping(value = "/{id}" , produces = {"application/json" , "application/xml" , "application/x-yaml"})
 	public PersonVO findById(@PathVariable("id") Long id){
 		PersonVO personVO = service.findById(id);
@@ -41,6 +46,7 @@ public class PersonController {
 		return personVO;
 	}
 	
+	@ApiOperation(value = "New People")
 	@PostMapping(produces = {"application/json" , "application/xml" , "application/x-yaml"} , 
 			consumes =  {"application/json" , "application/xml" , "application/x-yaml"})
 	public PersonVO create(@RequestBody PersonVO person){
@@ -49,6 +55,7 @@ public class PersonController {
 		return personVO;
 	}
 	
+	@ApiOperation(value = "Update Informations")
 	@PutMapping(produces = {"application/json" , "application/xml" , "application/x-yaml"} , 
 			consumes =  {"application/json" , "application/xml" , "application/x-yaml"})
 	public PersonVO update(@RequestBody PersonVO person){
@@ -57,6 +64,7 @@ public class PersonController {
 		return personVO;
 	}
 	
+	@ApiOperation(value = "Delete people")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id){
 		service.delete(id);
